@@ -1,8 +1,9 @@
-name: Daily MD S
+name: Daily MD
 
 on:
   schedule:
     - cron: "0 17 * * *"
+    timezone: "Asia/Jakarta"
   workflow_dispatch:
 
 permissions:
