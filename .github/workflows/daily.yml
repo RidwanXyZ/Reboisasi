@@ -1,0 +1,47 @@
+name: Daily MD
+
+on:
+  schedule:
+    - cron: "0 17 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate daily markdown
+        env:
+          USERNAME: ${{ github.repository_owner }}
+        run: |
+          DATE=$(TZ=Asia/Jakarta date +"%Y-%m-%d")
+          TIME=$(TZ=Asia/Jakarta date +"%H:%M:%S")
+
+          cat > daily.md << EOF
+          # Halo 👋
+
+          Halo, gua **$USERNAME**, makasih ya udh mampir kesini.....
+
+          > 🕐 $TIME WIB
+          >
+          > 📅 $DATE
+          >
+          > (｡•̀ᴗ-)✧
+
+          Semoga harimu menyenangkan! ✨
+          EOF
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add daily.md
+          git commit -m "docs: daily update $(TZ=Asia/Jakarta date +'%Y-%m-%d')" || exit 0
+          git push
