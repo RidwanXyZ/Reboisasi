@@ -44,4 +44,5 @@ jobs:
 
           git add README.md
           git commit -m "docs: daily update $(TZ=Asia/Jakarta date +'%Y-%m-%d')" || exit 0
-          git push
+          git pull --rebase origin main
+          git push origin main
